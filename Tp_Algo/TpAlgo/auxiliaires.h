@@ -45,12 +45,6 @@ public:
 	bool operator< (const Date & other) const;
 	bool operator> (const Date & other) const;
 	friend std::ostream & operator<<(std::ostream & flux, const Date & p_date);
-	unsigned int getAn() const;
-	void setAn(unsigned int an);
-	unsigned int getJour() const;
-	void setJour(unsigned int jour);
-	unsigned int getMois() const;
-	void setMois(unsigned int mois);
 
 private:
 	unsigned int m_an;
@@ -76,12 +70,6 @@ public:
 	bool operator>= (const Heure & other) const;
 	int operator- (const Heure & other) const;
 	friend std::ostream & operator<<(std::ostream & flux, const Heure & p_heure);
-	unsigned int getHeure() const;
-	void setHeure(unsigned int heure);
-	unsigned int getMin() const;
-	void setMin(unsigned int min);
-	unsigned int getSec() const;
-	void setSec(unsigned int sec);
 
 private:
 	unsigned int m_heure;
