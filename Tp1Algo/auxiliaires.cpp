@@ -7,23 +7,42 @@
 
 #include "auxiliaires.h"
 #include <time.h>
+#include <sstream>
+
 
 std::vector<std::string> split(const std::string& s, char delim) {
 	std::vector<std::string> output;
+    std::stringstream is;
+    is.str(s);
+    std::string item;
+    while (getline(is, item, delim)) {
+        output.push_back(item);
+    }
 	return output;
 }
 
 void lireFichier(std::string nomFichier,
 		std::vector<std::vector<std::string> >& resultats, char delimiteur,
 		bool rm_entete) {
+
+	std::ifstream folder(nomFichier, std::ios::in);
+	if(folder){
+		std::string item;
+		while(getline(folder, item)){
+			resultats.push_back(split(item, delimiteur));
+		}
+	}
+	else{
+		throw std::logic_error("Error");
+	}
 }
 
 Date::Date(){
 	time_t seconds = time(NULL);
 	struct tm *timeinfo = localtime(&seconds);
 	m_jour = timeinfo->tm_mday;
-	m_mois = timeinfo->tm_mon;
-	m_an = timeinfo->tm_year;
+	m_mois = timeinfo->tm_mon + 1;
+	m_an = timeinfo->tm_year + 1900;
 }
 
 Date::Date(unsigned int an, unsigned int mois, unsigned int jour): m_an(an), m_mois(mois), m_jour(jour) {
