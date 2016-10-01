@@ -7,7 +7,10 @@
 
 #include "arret.h"
 
-Arret::Arret(const std::vector<std::string>& ligne_gtfs){
+Arret::Arret(const std::vector<std::string>& ligne_gtfs): m_station_id(std::stoi(ligne_gtfs[3])),
+m_heure_arrivee(Heure(std::stoi(split(ligne_gtfs[1],':')[0]),std::stoi(split(ligne_gtfs[1],':')[1]),std::stoi(split(ligne_gtfs[1],':')[2]))),
+m_heure_depart(Heure(std::stoi(split(ligne_gtfs[2],':')[0]),std::stoi(split(ligne_gtfs[2],':')[1]),std::stoi(split(ligne_gtfs[2],':')[2]))),
+m_numero_sequence(std::stoi(ligne_gtfs[4])), m_voyage_id(ligne_gtfs[0]){
 }
 
 void Arret::setHeureArrivee(const Heure& p_heureArrivee) {

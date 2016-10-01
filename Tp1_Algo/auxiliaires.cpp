@@ -31,6 +31,9 @@ void lireFichier(std::string nomFichier,
 		while(getline(folder, item)){
 			resultats.push_back(split(item, delimiteur));
 		}
+		if(rm_entete){
+			resultats.erase(resultats.begin());
+		}
 	}
 	else{
 		throw std::logic_error("Error");
