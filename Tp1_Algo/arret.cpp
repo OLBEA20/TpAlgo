@@ -14,7 +14,7 @@ m_numero_sequence(std::stoi(ligne_gtfs[4])), m_voyage_id(ligne_gtfs[0]){
 }
 
 void Arret::setHeureArrivee(const Heure& p_heureArrivee) {
-	Heure m_heure_arrivee(p_heureArrivee);
+	m_heure_arrivee = Heure(p_heureArrivee);
 }
 
 const Heure& Arret::getHeureArrivee() const {
@@ -26,7 +26,7 @@ const Heure& Arret::getHeureDepart() const {
 }
 
 void Arret::setHeureDepart(const Heure& p_heureDepart) {
-	Heure m_heure_depart(p_heureDepart);
+	m_heure_depart = Heure(p_heureDepart);
 }
 
 unsigned int Arret::getNumeroSequence() const {

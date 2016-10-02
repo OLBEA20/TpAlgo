@@ -92,7 +92,8 @@ bool Date::operator >(const Date& other) const {
 }
 
 std::ostream& operator<<(std::ostream & flux, const Date & p_date){
-	return flux << p_date.m_an << "-" << p_date.m_mois << "-" << p_date.m_jour;
+	return flux << std::setw(4) << std::setfill('0') << p_date.m_an << "-" << std::setw(2) << std::setfill('0') <<
+			p_date.m_mois << "-" << std::setw(2) << std::setfill('0') << p_date.m_jour;
 }
 
 Heure::Heure() {
@@ -106,22 +107,19 @@ Heure::Heure() {
 Heure::Heure(unsigned int heure, unsigned int min, unsigned int sec):m_heure(heure), m_min(min), m_sec(sec)  {
 	int correction;
 
-	if(m_sec > 60){
+	if(m_sec >= 60){
 		correction = m_sec/60;
 		m_min += correction;
 		m_sec-=(correction*60);
 	}
-	if(m_min > 60){
+	if(m_min >= 60){
 		correction = m_min/60;
 		m_heure += correction;
 		m_min -= (correction*60);
 	}
-	if(m_heure > 30){
+	if(m_heure >= 30){
 		correction = m_heure/30;
 		m_heure -= (correction*30);
-	}
-	if(m_heure == 30 && (m_min > 0 || m_sec > 0)){
-		m_heure = 0;
 	}
 }
 
@@ -131,7 +129,9 @@ Heure Heure::add_secondes(unsigned int secs) const {
 	return heure;
 }
 std::ostream & operator<<(std::ostream & flux, const Heure & p_heure){
-	return flux << p_heure.m_heure << ":" << p_heure.m_min << ":" << p_heure.m_sec;
+
+	return flux << std::setw(2)<< std::setfill('0') <<  p_heure.m_heure << ":" << std::setw(2) << std::setfill('0') << p_heure.m_min
+			<< ":" << std::setw(2)<< std::setfill('0') << p_heure.m_sec;
 }
 
 bool Heure::operator ==(const Heure& other) const {

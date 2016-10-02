@@ -10,42 +10,60 @@
 #include "auxiliaires.h"
 #include <time.h>
 #include "arret.h"
+#include "voyage.h"
+#include "ligne.h"
 
 int main( int argc, const char* argv[] )
 {
 	Date date;
 	Date date2(2016,9,29);
 	Heure heure(24,14,11);
-	Heure heure2(25,15,1);
+	Heure heure2(24,14,11);
+	Heure heure3(24,15,41);
+
 
 	std::vector<std::vector<std::string>> hope;
+	std::vector<std::vector<std::string>> hope1;
+
 	lireFichier("stop_times.txt", hope, ',', true);
+	lireFichier("trips.txt", hope1, ',', true);
 
-	//int deltaTime = time(NULL);
+	std::vector<Arret> test;
 
-	Arret arret(hope[4]);
+	Arret arret(hope[0]);
+	Arret arret1(hope[1]);
+	Arret arret2(hope[2]);
+	arret2.setHeureArrivee(Heure(7,1,30));
 
-	//deltaTime = time(NULL) - deltaTime;
-	//std::cout << deltaTime << "(s)" << std::endl;
-	std::cout<< arret.getHeureArrivee() << std::endl;
+	test.push_back(arret);
+	test.push_back(arret1);
+	test.push_back(arret2);
 
-	for( int i = 0; i < 5; ++i){
+	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
+		std::cout << it->getHeureArrivee() << std::endl;
+		std::cout << it->getHeureDepart() << std::endl << std::endl;
+	}
+
+
+	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
+		if(it->getHeureArrivee() == std::next(it)->getHeureArrivee()){
+			std::next(it)->setHeureDepart(std::next(it)->getHeureDepart().add_secondes(30));
+			std::next(it)->setHeureArrivee(std::next(it)->getHeureArrivee().add_secondes(30));
+		}
+	}
+
+	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
+		std::cout << it->getHeureArrivee() << std::endl;
+		std::cout << it->getHeureDepart() << std::endl << std::endl;
+	}
+
+	/*for( int i = 0; i < 5; ++i){
 		for(unsigned int j = 0; j < hope[i].size(); ++j){
 			std::cout<< hope[i][j] << " ";
 		}
 		std::cout<<std::endl;
-	}
+	}*/
 
-	if(heure >= heure2){
-		std::cout<< "FUCK YEAH!!"<<std::endl;
-	}
-	else{
-		std::cout<< "HELL YEAH!!"<<std::endl;
-	}
-
-	std::cout<< date << std::endl;
-	std::cout<< heure << std::endl;
-	std::cout<< heure2 - heure << std::endl;
 }
 
 
