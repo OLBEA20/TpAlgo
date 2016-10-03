@@ -28,41 +28,19 @@ int main( int argc, const char* argv[] )
 	lireFichier("stop_times.txt", hope, ',', true);
 	lireFichier("trips.txt", hope1, ',', true);
 
-	std::vector<Arret> test;
-
-	Arret arret(hope[0]);
-	Arret arret1(hope[1]);
-	Arret arret2(hope[2]);
-	arret2.setHeureArrivee(Heure(7,1,30));
-
-	test.push_back(arret);
-	test.push_back(arret1);
-	test.push_back(arret2);
-
-	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
-		std::cout << it->getHeureArrivee() << std::endl;
-		std::cout << it->getHeureDepart() << std::endl << std::endl;
-	}
-
-
-	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
-		if(it->getHeureArrivee() == std::next(it)->getHeureArrivee()){
-			std::next(it)->setHeureDepart(std::next(it)->getHeureDepart().add_secondes(30));
-			std::next(it)->setHeureArrivee(std::next(it)->getHeureArrivee().add_secondes(30));
-		}
-	}
-
-	for(std::vector<Arret>::iterator it = test.begin(); it < test.end(); ++it){
-		std::cout << it->getHeureArrivee() << std::endl;
-		std::cout << it->getHeureDepart() << std::endl << std::endl;
-	}
-
-	/*for( int i = 0; i < 5; ++i){
+	for( int i = 0; i < 5; ++i){
 		for(unsigned int j = 0; j < hope[i].size(); ++j){
 			std::cout<< hope[i][j] << " ";
 		}
 		std::cout<<std::endl;
-	}*/
+	}
+
+	for( int i = 0; i < 5; ++i){
+		for(unsigned int j = 0; j < hope1[i].size(); ++j){
+			std::cout<< hope1[i][j] << " ";
+		}
+		std::cout<<std::endl;
+	}
 
 }
 

@@ -86,6 +86,15 @@ void Voyage::setArrets(std::vector<Arret>& resultat) {
 	}
 }
 
+Arret& Voyage::arretDeLaStation(unsigned int p_num_station) {
+	for(std::vector<Arret>::iterator it = m_arrets.begin(); it < m_arrets.end(); ++it){
+		if(it->getStationId() == p_num_station){
+			return *it;
+		}
+	}
+	throw std::logic_error("No matching station.");
+}
+
 bool Voyage::operator >(const Voyage& p_other) const {
 	if(getHeureFin() > p_other.getHeureFin()){
 		return true;
