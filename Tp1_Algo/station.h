@@ -28,6 +28,7 @@ private:
     std::string m_description;
     Coordonnees m_coords;
     std::vector<Voyage* > m_voyages_passants;
+    std::vector<Ligne* > m_lignes_passantes;
 
 public:
     Station(const std::vector<std::string>& ligne_gtfs);
