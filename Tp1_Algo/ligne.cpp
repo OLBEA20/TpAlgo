@@ -15,25 +15,25 @@ Ligne::Ligne(const std::vector<std::string>& ligne_gtfs)
 	m_categorie = ligne_gtfs[7];
 	m_voyages = std::vector<Voyage*>;
 }
-static CategorieBus Ligne::couleurToCategorie(std::string couleur)
+CategorieBus Ligne::couleurToCategorie(std::string couleur)
 {
 	switch(couleur)
 	{
-	case '97BF0D': return CategorieBus::METRO_BUS;
-	case '013888': return CategorieBus::LEBUS;
-	case 'E04503': return CategorieBus::EXPRESS;
-	case '1A171B': return CategorieBus::COUCHE_TARD;
+	case "97BF0D": return CategorieBus::METRO_BUS;
+	case "013888": return CategorieBus::LEBUS;
+	case "E04503": return CategorieBus::EXPRESS;
+	case "1A171B": return CategorieBus::COUCHE_TARD;
 	default : throw std::logic_error("Error");
 	}
 }
-static std::string Ligne::categorieToString(CategorieBus c)
+std::string Ligne::categorieToString(CategorieBus c)
 {
 	switch(c)
 	{
-	case CategorieBus::METRO_BUS: return '97BF0D';
-	case CategorieBus::LEBUS: return '013888';
-	case CategorieBus::EXPRESS: return 'E04503';
-	case CategorieBus::COUCHE_TARD: return '1A171B';
+	case CategorieBus::METRO_BUS: return "97BF0D";
+	case CategorieBus::LEBUS: return "013888";
+	case CategorieBus::EXPRESS: return "E04503";
+	case CategorieBus::COUCHE_TARD: return "1A171B";
 	default: throw std::logic_error("Error");
 	}
 }

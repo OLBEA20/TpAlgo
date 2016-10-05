@@ -17,9 +17,7 @@ Coordonnees::Coordonnees(double latitude, double longitude)
 	}
 	else
 	{
-		//ne creer pas lobjet ??
-		m_latitude = 0;
-		m_longitude = 0;
+		throw std::logic_error("Error");
 	}
 }
 double Coordonnees::getLatitude() const
@@ -38,9 +36,9 @@ double Coordonnees::getLongitude() const
 void Coordonnees::setLongitude(double p_longitude)
 {
 	if(!(p_longitude < -180 || p_longitude > 180))
-		m_longitude = p_longitude
+		m_longitude = p_longitude;
 }
-static bool Coordonnees::is_valide_coord(double p_latitude, double p_longitude)
+bool Coordonnees::is_valide_coord(double p_latitude, double p_longitude)
 {
 	if(p_latitude < -90 || p_latitude > 90)
 		return false;
