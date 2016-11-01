@@ -10,10 +10,15 @@
 #define INFINI 999999
 #define DEFAULT_TYPE 0
 
+#include <unordered_map>
+#include <algorithm>
+#include <list>
+#include <vector>
+#include <tuple>
 /*!
  *
  */
-typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
+//typedef std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int> > liste_arcs;
 
 
 /*!
@@ -52,6 +57,11 @@ public:
 	int getComposantesFortementConnexes(std::vector<std::vector<unsigned int> > & composantes) const;
 
 private:
+
+	std::unordered_map<unsigned int,std::list<std::tuple< unsigned int, unsigned int, unsigned int>>> liste_arcs;
+
+	unsigned int nbSommets;
+	unsigned int nbArcs;
 	/** À compléter */
 
 };
