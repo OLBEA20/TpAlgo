@@ -58,10 +58,11 @@ public:
 
 private:
 
+	//Le tuple est compose du numero de destination, du cout et du type de l'arc dans cette ordre.
 	std::unordered_map<unsigned int,std::list<std::tuple< unsigned int, unsigned int, unsigned int>>> liste_arcs;
 
-	unsigned int nbSommets;
-	unsigned int nbArcs;
+	int nbSommets;
+	int nbArcs;
 	/** À compléter */
 
 };

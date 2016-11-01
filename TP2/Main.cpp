@@ -11,13 +11,31 @@
 #include "arret.h"
 #include "voyage.h"
 #include "ligne.h"
+#include "reseau.h"
 #include <unordered_map>
 
 using namespace std;
 
 int main( int argc, const char* argv[] )
 {
-	Date date1;
+
+	Reseau reseau;
+	reseau.ajouterSommet(1);
+	reseau.ajouterSommet(2);
+	reseau.ajouterSommet(3);
+	std::cout<<reseau.nombreSommets()<<std::endl;
+	reseau.ajouterArc(1,2,1);
+	reseau.ajouterArc(1,3,1);
+	reseau.ajouterArc(2,1,1);
+	reseau.majCoutArc(1,2,3);
+
+	std::cout<<reseau.arcExiste(1,2)<<std::endl;
+	std::cout<<reseau.arcExiste(2,1)<<std::endl;
+	std::cout<<reseau.arcExiste(1,4)<<std::endl;
+	std::cout<<reseau.nombreArcs()<<std::endl;
+
+
+	/*Date date1;
 	Heure heure1;
 
 	unsigned int deltaTime = time(NULL);
@@ -104,7 +122,7 @@ int main( int argc, const char* argv[] )
 		if((it->getHeureDepart()- heure1 < 3600) && (it->getHeureDepart() - heure1 > 0)){
 			outfile << *it;
 		}
-	}
+	}*/
 }
 
 
