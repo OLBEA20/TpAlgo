@@ -247,3 +247,109 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest,
 		throw std::logic_error("Un des sommets est inexistant");
 	}
 }
+
+int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
+		std::vector<unsigned int>& chemin) throw (std::logic_error) {
+
+	if(sommetExiste(numOrigine) && sommetExiste(numDest)){
+
+		for(std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int>>::iterator it = liste_sommets.begin(); it != liste_sommets.end(); ++it){
+			it->second.first = INFINI;
+			it->second.second = 0;
+		}
+		liste_sommets.find(numOrigine)->second.first = 0;
+
+		unsigned int prevDist = liste_sommets.find(numDest)->second.first;
+		for(int i = 0; i < (nbSommets-1); ++i){
+
+			for(std::unordered_map<unsigned int,std::list<std::tuple<unsigned int, unsigned int, unsigned int>>>::iterator it = liste_arcs.begin(); it != liste_arcs.end(); ++it){
+				std::list<std::tuple<unsigned int, unsigned int, unsigned int>> liste_sommets_adjacents = it->second;
+				for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::iterator it2 = liste_sommets_adjacents.begin(); it2 != liste_sommets_adjacents.end(); ++it2){
+					unsigned int temp = liste_sommets.find(it->first)->second.first + std::get<1>(*it2);
+
+					//verifie si temp < d(v)
+					if(temp < liste_sommets.find(std::get<0>(*it2))->second.first){
+						liste_sommets.find(std::get<0>(*it2))->second.first = temp;
+						liste_sommets.find(std::get<0>(*it2))->second.second = it->first;
+					}
+				}
+			}
+
+			//Vefirie si on a relache tous les arc entre l'origine et la destination
+			if(prevDist != INFINI && prevDist == liste_sommets.find(numDest)->second.first){
+				break;
+			}
+			else{
+				prevDist = liste_sommets.find(numDest)->second.first;
+			}
+		}
+		//reconstruit le chemin entre les deux sommets
+		chemin.push_back(numDest);
+		unsigned int u = numDest;
+		while(u != numOrigine){
+			u = liste_sommets.find(u)->second.second;
+			chemin.push_back(u);
+		}
+		std::reverse(chemin.begin(),chemin.end());
+
+		return liste_sommets.find(numDest)->second.first;
+	}
+	else{
+		throw std::logic_error("Un des sommets n'existe pas");
+	}
+}
+
+bool Reseau::estFortementConnexe() const {
+
+	std::unordered_map<unsigned int, bool> liste_sommets_visites2 = liste_sommets_visites;
+
+	for(std::unordered_map<unsigned int, bool>::iterator it = liste_sommets_visites2.begin(); it != liste_sommets_visites2.end(); ++it){
+		it->second = false;
+	}
+
+	std::list<unsigned int> noeud2visite;
+	liste_sommets_visites2.begin()->second = true;
+	noeud2visite.push_back(liste_sommets_visites2.begin()->first);
+
+	while(!noeud2visite.empty()){
+		unsigned int noeudTraite = noeud2visite.back();
+		noeud2visite.pop_back();
+		std::cout<<noeudTraite<<std::endl;
+		std::list<std::tuple<unsigned int, unsigned int, unsigned int>> noeautAdjacents = liste_arcs.find(noeudTraite)->second;
+		for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::iterator it = noeautAdjacents.begin(); it != noeautAdjacents.end(); ++it){
+			if(liste_sommets_visites2.find(std::get<0>(*it))->second == false){
+				liste_sommets_visites2.find(std::get<0>(*it))->second = true;
+				noeud2visite.push_back(std::get<0>(*it));
+			}
+		}
+	}
+	for(std::unordered_map<unsigned int, bool>::iterator it = liste_sommets_visites2.begin(); it != liste_sommets_visites2.end(); ++it){
+		if(it->second == false){
+			return false;
+		}
+	}
+	return true;
+}
+
+int Reseau::getComposantesFortementConnexes(
+		std::vector<std::vector<unsigned int> >& composantes) const {
+	Reseau grapheInverse;
+	std::unordered_map<unsigned int, unsigned int> fin;
+
+	//ajoute les sommest au graphe inverse et construit le unordered_map pour le temps d'abandon lors du parcours du graphe.
+	for(std::unordered_map<unsigned int, bool>::const_iterator it = liste_sommets_visites.begin(); it != liste_sommets_visites.end(); ++it){
+		grapheInverse.ajouterSommet(it->first);
+		fin.insert({it->first, 0});
+	}
+
+	for(std::unordered_map<unsigned int, std::list<std::tuple<unsigned int, unsigned int, unsigned int>>>::const_iterator it = liste_arcs.begin(); it != liste_arcs.end(); ++it){
+		std::list<std::tuple<unsigned int, unsigned int, unsigned int>> liste_adjacent = it->second;
+		for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::const_iterator it2 = liste_adjacent.begin(); it2 != liste_adjacent.end(); ++it2){
+			grapheInverse.ajouterArc(std::get<0>(*it2), it->first, std::get<1>(*it2), std::get<2>(*it2));
+		}
+	}
+
+
+
+
+}
