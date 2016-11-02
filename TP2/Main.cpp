@@ -28,26 +28,26 @@ int main( int argc, const char* argv[] )
 	reseau.ajouterSommet(4);
 	reseau.ajouterSommet(5);
 	reseau.ajouterSommet(6);
-	reseau.ajouterArc(1,2,4);
-	reseau.ajouterArc(1,3,2);
-	reseau.ajouterArc(2,1,4);
-	reseau.ajouterArc(2,3,1);
-	reseau.ajouterArc(2,4,5);
-	reseau.ajouterArc(3,1,2);
-	reseau.ajouterArc(3,2,1);
-	reseau.ajouterArc(3,4,8);
-	reseau.ajouterArc(3,5,10);
-	reseau.ajouterArc(4,2,5);
-	reseau.ajouterArc(4,3,8);
-	reseau.ajouterArc(4,5,2);
-	reseau.ajouterArc(5,3,10);
-	reseau.ajouterArc(5,4,2);
-	reseau.ajouterArc(5,6,3);
-	reseau.ajouterArc(4,6,6);
-	reseau.ajouterArc(6,4,6);
-	reseau.ajouterArc(6,5,3);
+	reseau.ajouterSommet(7);
+	reseau.ajouterSommet(8);
+	reseau.ajouterArc(1,2,2);
+	reseau.ajouterArc(2,3,3);
+	reseau.ajouterArc(3,4,3);
+	reseau.ajouterArc(3,6,6);
+	reseau.ajouterArc(4,7,4);
+	reseau.ajouterArc(5,2,2);
+	reseau.ajouterArc(5,8,5);
+	reseau.ajouterArc(6,4,1);
+	reseau.ajouterArc(6,5,4);
+	reseau.ajouterArc(6,7,5);
+	reseau.ajouterArc(7,8,3);
+	reseau.ajouterArc(8,6,1);
 
-	std::cout<<reseau.dijkstra(1,6, v);
+
+	std::cout<<reseau.dijkstra(5,4, v)<<std::endl;
+	for(std::vector<unsigned int>::iterator it = v.begin(); it != v.end(); ++it){
+		std::cout<<*it<<std::endl;
+	}
 
 
 	/*Date date1;
