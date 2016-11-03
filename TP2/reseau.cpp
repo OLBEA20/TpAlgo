@@ -301,55 +301,74 @@ int Reseau::bellmanFord(unsigned int numOrigine, unsigned int numDest,
 
 bool Reseau::estFortementConnexe() const {
 
-	std::unordered_map<unsigned int, bool> liste_sommets_visites2 = liste_sommets_visites;
+	std::vector<std::vector<unsigned int>> paramRemplissage;
 
-	for(std::unordered_map<unsigned int, bool>::iterator it = liste_sommets_visites2.begin(); it != liste_sommets_visites2.end(); ++it){
-		it->second = false;
+	if(getComposantesFortementConnexes(paramRemplissage) == 1){
+		return true;
 	}
-
-	std::list<unsigned int> noeud2visite;
-	liste_sommets_visites2.begin()->second = true;
-	noeud2visite.push_back(liste_sommets_visites2.begin()->first);
-
-	while(!noeud2visite.empty()){
-		unsigned int noeudTraite = noeud2visite.back();
-		noeud2visite.pop_back();
-		std::cout<<noeudTraite<<std::endl;
-		std::list<std::tuple<unsigned int, unsigned int, unsigned int>> noeautAdjacents = liste_arcs.find(noeudTraite)->second;
-		for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::iterator it = noeautAdjacents.begin(); it != noeautAdjacents.end(); ++it){
-			if(liste_sommets_visites2.find(std::get<0>(*it))->second == false){
-				liste_sommets_visites2.find(std::get<0>(*it))->second = true;
-				noeud2visite.push_back(std::get<0>(*it));
-			}
-		}
+	else{
+		return false;
 	}
-	for(std::unordered_map<unsigned int, bool>::iterator it = liste_sommets_visites2.begin(); it != liste_sommets_visites2.end(); ++it){
-		if(it->second == false){
-			return false;
-		}
-	}
-	return true;
 }
 
 int Reseau::getComposantesFortementConnexes(
 		std::vector<std::vector<unsigned int> >& composantes) const {
-	Reseau grapheInverse;
-	std::unordered_map<unsigned int, unsigned int> fin;
+	std::list<unsigned int> fin;
+	std::unordered_map<unsigned int, bool> sommetVisitee;
 
+	std::unordered_map<unsigned int, std::list<std::tuple< unsigned int, unsigned int, unsigned int>>> grapheInverse;
 	//ajoute les sommest au graphe inverse et construit le unordered_map pour le temps d'abandon lors du parcours du graphe.
 	for(std::unordered_map<unsigned int, bool>::const_iterator it = liste_sommets_visites.begin(); it != liste_sommets_visites.end(); ++it){
-		grapheInverse.ajouterSommet(it->first);
-		fin.insert({it->first, 0});
+		std::list<std::tuple<unsigned int, unsigned int, unsigned int>> arcs;
+		grapheInverse.insert({it->first, arcs});
+		sommetVisitee.insert({it->first, false});
 	}
 
+	//ajout des arcs au graphe inverse
 	for(std::unordered_map<unsigned int, std::list<std::tuple<unsigned int, unsigned int, unsigned int>>>::const_iterator it = liste_arcs.begin(); it != liste_arcs.end(); ++it){
 		std::list<std::tuple<unsigned int, unsigned int, unsigned int>> liste_adjacent = it->second;
 		for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::const_iterator it2 = liste_adjacent.begin(); it2 != liste_adjacent.end(); ++it2){
-			grapheInverse.ajouterArc(std::get<0>(*it2), it->first, std::get<1>(*it2), std::get<2>(*it2));
+			grapheInverse.find(std::get<0>(*it2))->second.push_back(std::make_tuple(it->first, std::get<1>(*it2), std::get<2>(*it2)));
+		}
+	}
+	std::vector<std::vector<unsigned int>> vBuffer;
+	for(std::unordered_map<unsigned int, bool>::iterator it = sommetVisitee.begin(); it != sommetVisitee.end(); ++it){
+		if(!it->second){
+			std::vector<unsigned int> vBuffer2;
+			vBuffer.push_back(vBuffer2);
+			const_cast<Reseau*>( this )->explore(sommetVisitee, grapheInverse, vBuffer, fin, it->first, 0);
 		}
 	}
 
+	for(std::unordered_map<unsigned int, bool>::iterator it = sommetVisitee.begin(); it != sommetVisitee.end(); ++it){
+		it->second = false;
+	}
 
+	std::list<unsigned int> buffer;
+	std::unordered_map<unsigned int, std::list<std::tuple<unsigned int, unsigned int, unsigned int>>> copie_liste_arcs = liste_arcs;
+	int nbComposante = 0;
+	for(std::list<unsigned int>::reverse_iterator it = fin.rbegin(); it != fin.rend(); ++it){
+		if(!sommetVisitee.find(*it)->second){
+			std::vector<unsigned int> v;
+			composantes.push_back(v);
+			const_cast<Reseau*>( this )->explore(sommetVisitee, copie_liste_arcs,  composantes, buffer, *it, nbComposante);
+			nbComposante++;
+		}
+	}
 
+	return nbComposante;
+}
 
+void Reseau::explore(std::unordered_map<unsigned int, bool> & graphe ,
+			std::unordered_map<unsigned int, std::list<std::tuple< unsigned int, unsigned int, unsigned int>>> & grapheInverse, std::vector<std::vector<unsigned int> >& composantes,
+			std::list<unsigned int> & fin, unsigned int v, unsigned int index) {
+	graphe.find(v)->second = true;
+	composantes[index].push_back(v);
+	std::list<std::tuple<unsigned int, unsigned int, unsigned int>> sommentAdjacents = grapheInverse.find(v)->second;
+	for(std::list<std::tuple<unsigned int, unsigned int, unsigned int>>::iterator it2 = sommentAdjacents.begin(); it2 != sommentAdjacents.end(); ++it2){
+		if(!graphe.find(std::get<0>(*it2))->second){
+			explore(graphe, grapheInverse, composantes, fin, std::get<0>(*it2), index);
+		}
+	}
+	fin.push_back(v);
 }

@@ -19,45 +19,6 @@ using namespace std;
 int main( int argc, const char* argv[] )
 {
 
-	std::vector<unsigned int> v;
-
-	Reseau reseau;
-	reseau.ajouterSommet(1);
-	reseau.ajouterSommet(2);
-	reseau.ajouterSommet(3);
-	reseau.ajouterSommet(4);
-	reseau.ajouterSommet(5);
-	reseau.ajouterSommet(6);
-	reseau.ajouterSommet(7);
-	reseau.ajouterSommet(8);
-	reseau.ajouterArc(1,2,2);
-	reseau.ajouterArc(2,3,3);
-	reseau.ajouterArc(3,4,3);
-	reseau.ajouterArc(3,6,6);
-	reseau.ajouterArc(4,7,4);
-	reseau.ajouterArc(5,2,2);
-	reseau.ajouterArc(5,8,5);
-	reseau.ajouterArc(6,4,1);
-	reseau.ajouterArc(6,5,4);
-	reseau.ajouterArc(6,7,5);
-	reseau.ajouterArc(7,8,3);
-	reseau.ajouterArc(8,6,1);
-
-	Reseau reseau2;
-	reseau2.ajouterSommet(1);
-	reseau2.ajouterSommet(2);
-	reseau2.ajouterSommet(3);
-	reseau2.ajouterArc(1,2,1);
-	//reseau2.ajouterArc(2,1,1);
-	reseau2.ajouterArc(3,2,1);
-	reseau2.ajouterArc(3,1,1);
-
-
-	/*std::cout<<"dist: "<<reseau.bellmanFord(5,4, v)<<std::endl;
-	for(std::vector<unsigned int>::iterator it = v.begin(); it != v.end(); ++it){
-		std::cout<<*it<<std::endl;
-	}*/
-	std::cout<<reseau2.estFortementConnexe();
 
 
 	/*Date date1;
