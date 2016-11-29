@@ -237,8 +237,52 @@ int Reseau::dijkstra(unsigned int numOrigine, unsigned int numDest, std::vector<
  */
 int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDest, std::vector<unsigned int> & chemin) throw (std::logic_error)
 {
-    //TODO À completer
-	return 0;
+    std::unordered_map<unsigned int, int> distances;
+    std::unordered_map<unsigned int, int> predecesseurs;
+    unsigned int max_poids = std::numeric_limits<int>::max();
+    unsigned int noeud_min;
+    int temp;
+    std::priority_queue<Pair, std::vector<Pair>, std::greater<Pair>> Q;
+
+    for(auto arcs: m_arcs){
+    	distances[arcs.first] = max_poids;
+    	predecesseurs[arcs.first] = -1;
+    }
+
+    Q.push(std::make_pair(0, numOrigine));
+    distances[numOrigine] = 0;
+
+    while(!Q.empty()){
+    	noeud_min = Q.top().second;
+    	Q.pop();
+    	if(noeud_min == numDest){
+    		break;
+    	}
+
+    	for(auto voisin: m_arcs[noeud_min]){
+    		temp = voisin.second.first + distances[noeud_min];
+			if(temp < distances[voisin.first]) {
+				distances[voisin.first] = temp;
+				predecesseurs[voisin.first] = noeud_min;
+				Q.push(std::make_pair(distances[voisin.first], voisin.first));
+			}
+    	}
+
+    }
+
+    chemin.clear();
+    if(predecesseurs[numDest] != -1){
+    	std::vector<unsigned int> chemin_inverse;
+		int courant = numDest;
+		while(courant!=-1){
+			chemin_inverse.push_back(courant);
+			courant = predecesseurs[courant];
+		}
+		for(int i=chemin_inverse.size() -1; i >= 0; i--){
+			chemin.push_back(chemin_inverse[i]);
+		}
+    }
+    return distances[numDest];
 }
 
 /*!

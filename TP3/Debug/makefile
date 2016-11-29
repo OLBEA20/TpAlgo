@@ -43,7 +43,7 @@ all: TP3
 TP3: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L"/home/etudiant/workspace/TP3" -o "TP3" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/etudiant/Git/TpAlgo/TP3" -o "TP3" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
