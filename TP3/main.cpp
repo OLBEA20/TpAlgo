@@ -11,9 +11,9 @@ using namespace std;
 int main() {
     GestionnaireInvestigation rtc("googletransit");
 
-    //cout << "Temps moyen de dijsktra " << rtc.tester_n_paires_dijsktra(1000) << endl;
+    cout << "Temps moyen de dijsktra " << rtc.tester_n_paires_dijsktra(10) << endl;
 
-    //cout << "Temps moyen de bellman " << rtc.tester_n_paires_bellman(1000) << endl;
+    cout << "Temps moyen de bellman " << rtc.tester_n_paires_bellman(10) << endl;
 
     cout << "Temps moyen de meilleur plus cour chemin " << rtc.tester_n_paires_meilleurPlusCourtChemin(10) << endl;
 

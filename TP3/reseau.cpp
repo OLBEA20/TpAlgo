@@ -242,34 +242,50 @@ int Reseau::meilleurPlusCourtChemin(unsigned int numOrigine, unsigned int numDes
     unsigned int max_poids = std::numeric_limits<int>::max();
     unsigned int noeud_min;
     int temp;
+
+    //Tas min pour les noeuds non-solutionnes.
     std::priority_queue<Pair, std::vector<Pair>, std::greater<Pair>> Q;
 
+
+    //Initialisation des distances.
     for(auto arcs: m_arcs){
     	distances[arcs.first] = max_poids;
     	predecesseurs[arcs.first] = -1;
     }
 
+    //On insere le noeud d'origine. Noter que l'on place la distance en premier dans
+    //la pair puisque la priority queue de la STL utilise le premier element pour ses comparaisons.
     Q.push(std::make_pair(0, numOrigine));
     distances[numOrigine] = 0;
 
+
+    //Tant que la pile n'est pas vide on trouve les plus courts chemin de facon gloutonne.
     while(!Q.empty()){
+
+    	//On traite le noeud sur le dessus de la pile, qui correspond au nouveau noeud solutionne.
     	noeud_min = Q.top().second;
     	Q.pop();
+
+    	//On verifie si nous somme arrivee a destination.
     	if(noeud_min == numDest){
     		break;
     	}
 
+    	//On traite les noeuds voisins du noeud solutionnee
     	for(auto voisin: m_arcs[noeud_min]){
     		temp = voisin.second.first + distances[noeud_min];
 			if(temp < distances[voisin.first]) {
 				distances[voisin.first] = temp;
 				predecesseurs[voisin.first] = noeud_min;
+
+				//On insere les voisins avec leur nouvelle distance par rapport au noeud d'origine.
 				Q.push(std::make_pair(distances[voisin.first], voisin.first));
 			}
     	}
 
     }
 
+    //On reconstruit le chemin.
     chemin.clear();
     if(predecesseurs[numDest] != -1){
     	std::vector<unsigned int> chemin_inverse;
