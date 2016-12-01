@@ -231,6 +231,13 @@ double GestionnaireInvestigation::tester_n_paires_bellman(unsigned int nb_paires
 	return total/(1.0*nb_paires);
 }
 
+
+/*!
+ * Mesurer le temps d'exécution moyen de notre algorithme de plus cour chemin sur toutes les paires de stations du réseau de la RTC
+ * return un réel représentant le temps moyen de l'algorithme en microsecondes
+ * Note: Le code est le meme que pour la fonction tester_n_paires_bellman() et tester_n_paires_dijsktra(), nous avons seulement changer
+ * l'appel a la fonction de plus court chemin pour notre methode.
+ */
 double GestionnaireInvestigation::tester_n_paires_meilleurPlusCourtChemin(unsigned int nb_paires, unsigned int seed){
 	/* initialize random seed: */
 	srand (seed);
